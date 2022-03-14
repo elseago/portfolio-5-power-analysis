@@ -1,0 +1,48 @@
+---
+title: "portfolio-5-power-analysis"
+author: "Elayna Seago"
+date: "3/14/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+### This portfolio piece is a power analysis I did for my thesis. I used the package from the following link and there was also a tutorial on how to use the package:
+#https://cran.r-project.org/web/packages/Superpower/vignettes/intro_to_superpower.html#anova_design-function
+
+```{r load-libraries}
+library(Superpower)
+```
+
+
+# I calculated my means and SDs in excel and used the highest SD of my conditions.
+```{r }
+old_design <- ANOVA_design(design = "2w*2w",
+                             n=10,
+                             mu = c(1232.0,1293.31,1159.46,1410.40),
+                             sd = 298,
+                             r <- c(0.821,0.784,0.603,0.866,0.744,0.877),
+                             labelnames = c("CueType","Shift","Hold","BlockType","MostlyHold","MostlyShift")
+                             )
+```
+
+#plot power using sample size defined in old design
+```{r}
+plot_power(old_design, min_n=5, max_n = 100, desired_power=80, exact2 = TRUE)
+```
+
+
+#Run a power simulation based on the N defined above.
+```{r}
+results=ANOVA_power(design_result = old_design,alpha_level = 0.05, nsims = 10000, seed=1234,)
+```
+
+
